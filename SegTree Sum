@@ -1,24 +1,24 @@
 class ST {
-	vector<int> seg, lazy; 
+	vector<ll> seg, lazy; 
 public: 
-	ST(int n) {
+	ST(ll n) {
 		seg.resize(4 * n); 
 		lazy.resize(4 * n); 
 	}
 public: 
-	void build(int ind, int low, int high, vector<int>&a) {
+	void build(ll ind, ll low, ll high, vector<ll>&a) {
 		if(low == high) {
 			seg[ind] = arr[low];
 			return; 
 		}
-		int mid = (low + high) >> 1; 
+		ll mid = (low + high) >> 1; 
 		build(2*ind+1, low, mid, arr); 
 		build(2*ind+2, mid+1, high, arr); 
 		seg[ind] = seg[2*ind+1] + seg[2*ind+2];
 	}
 public:
-	void update(int ind, int low, int high, int l, int r, 
-		int val) {
+	void update(ll ind, ll low, ll high, ll l, ll r, 
+		ll val) {
 		// update the previous remaining updates 
 		// and propogate downwards 
 		if(lazy[ind] != 0) {
@@ -52,13 +52,13 @@ public:
 			return; 
 		}
 		// last case has to be no overlap case
-		int mid = (low + high) >> 1; 
+		ll mid = (low + high) >> 1; 
 		update(2*ind+1, low, mid, l, r, val);
 		update(2*ind+2, mid+1, high, l, r, val); 
 		seg[ind] = seg[2*ind+1] + seg[2*ind+2]; 
 	}
 public: 
-	int query(int ind, int low, int high, int l, int r) {
+	ll query(ll ind, ll low, ll high, ll l, l r) {
  
 		// update if any updates are remaining 
 		// as the node will stay fresh and updated 
@@ -82,9 +82,9 @@ public:
 		// complete overlap 
 		if(low>=l && high <= r) return seg[ind]; 
  
-		int mid = (low + high) >> 1; 
-		int left = query(2*ind+1, low, mid, l, r);
-		int right = query(2*ind+2, mid+1, high, l, r);
+		ll mid = (low + high) >> 1; 
+		ll left = query(2*ind+1, low, mid, l, r);
+		ll right = query(2*ind+2, mid+1, high, l, r);
 		return left + right; 
 	}
 };
